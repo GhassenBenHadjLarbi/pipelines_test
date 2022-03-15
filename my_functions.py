@@ -1,4 +1,4 @@
-def download():
+def download(arg1, arg2):
     import time
     print("Downloading data...")
     time.sleep(10)

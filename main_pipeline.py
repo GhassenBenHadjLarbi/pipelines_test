@@ -1,13 +1,13 @@
-from clearml import PipelineDecorator
+from clearml import PipelineDecorator, Task
 
 
 @PipelineDecorator.component(cache=False, return_values=['raw_data'],
                              repo='git@github.com:thepycoder/pipelines_test.git', repo_branch='main')
-def download_data():
+def download_data(data_query, data_location):
     # We want to import our packages INSIDE the function, so the agent knows what libraries to use when this function
     # becomes an isolated pipeline step
     from my_functions import download
-    raw_data = download()
+    raw_data = download(data_query, data_location)
     return raw_data
 
 
@@ -32,16 +32,17 @@ def transform_data(merged_data):
 def train_model(transformed_data):
     from my_functions import train
     accuracy = train(transformed_data)
-    PipelineDecorator.get_logger().report_scalar('Accuracy', 'Validation', accuracy, iteration=0)
+    Task.current_task().get_logger().report_scalar('Accuracy', 'Validation', accuracy, iteration=0)
     return accuracy
 
 
 @PipelineDecorator.pipeline(name="ETL Pipeline", project="Pipeline Examples", version="0.1")
 def main(data_query, data_location):
-    raw_data = download_data()
+    raw_data = download_data(data_query, data_location)
     merged_data = merge_data(raw_data)
     transformed_data = transform_data(merged_data)
     accuracy = train_model(transformed_data)
+    PipelineDecorator.get_logger().report_scalar('Accuracy', 'Validation', accuracy, iteration=0)
 
     return accuracy
 

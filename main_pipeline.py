@@ -6,7 +6,7 @@ from clearml import PipelineDecorator, Task
 def download_data(data_query, data_location):
     # We want to import our packages INSIDE the function, so the agent knows what libraries to use when this function
     # becomes an isolated pipeline step
-    from src.my_functions import download
+    from my_functions import download
     raw_data = download(data_query, data_location)
     return raw_data
 

@@ -2,7 +2,7 @@ from clearml import PipelineDecorator, Task
 
 
 @PipelineDecorator.component(cache=False, return_values=['raw_data'],
-                             repo='git@github.com:thepycoder/pipelines_test.git', repo_branch='main')
+                             repo='https://github.com/GhassenBenHadjLarbi/pipelines_test.git', repo_branch='main')
 def download_data(data_query, data_location):
     # We want to import our packages INSIDE the function, so the agent knows what libraries to use when this function
     # becomes an isolated pipeline step
@@ -12,7 +12,7 @@ def download_data(data_query, data_location):
 
 
 @PipelineDecorator.component(cache=False, return_values=['merged_data'],
-                             repo='git@github.com:thepycoder/pipelines_test.git', repo_branch='main')
+                             repo='https://github.com/GhassenBenHadjLarbi/pipelines_test.git', repo_branch='main')
 def merge_data(raw_data, second_data_source="s3://second_data_source"):
     from my_functions import merge
     merged_data = merge(raw_data, second_data_source)
@@ -20,7 +20,7 @@ def merge_data(raw_data, second_data_source="s3://second_data_source"):
 
 
 @PipelineDecorator.component(cache=False, return_values=['transformed_data'],
-                             repo='git@github.com:thepycoder/pipelines_test.git', repo_branch='main')
+                             repo='https://github.com/GhassenBenHadjLarbi/pipelines_test.git', repo_branch='main')
 def transform_data(merged_data):
     from my_functions import transform
     transformed_data = transform(merged_data)
@@ -28,7 +28,7 @@ def transform_data(merged_data):
 
 
 @PipelineDecorator.component(cache=False, return_values=['accuracy'],
-                             repo='git@github.com:thepycoder/pipelines_test.git', repo_branch='main')
+                             repo='https://github.com/GhassenBenHadjLarbi/pipelines_test.git', repo_branch='main')
 def train_model(transformed_data):
     from my_functions import train
     accuracy = train(transformed_data)
